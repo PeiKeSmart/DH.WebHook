@@ -3,10 +3,9 @@
 using NewLife.Log;
 using NewLife.Remoting;
 
-using Newtonsoft.Json;
-
 using System.Net;
 using System.Text;
+using System.Text.Json;
 
 namespace DH.WebHook
 {
@@ -84,7 +83,7 @@ namespace DH.WebHook
             tModel.at.isAtAll = isAtAll;
             tModel.msgtype = "text";
 
-            string data = JsonConvert.SerializeObject(tModel);
+            string data = JsonSerializer.Serialize(tModel);
             string json = Request(WebHookSetting.Current.DingTalkSendUrl, data, "POST");
 
             return json;
@@ -106,7 +105,7 @@ namespace DH.WebHook
             lModel.link.messageUrl = messageUrl;
             lModel.link.picUrl = picUrl;
 
-            string data = JsonConvert.SerializeObject(lModel);
+            string data = JsonSerializer.Serialize(lModel);
             string json = Request(WebHookSetting.Current.DingTalkSendUrl, data, "POST");
 
             return json;
@@ -131,7 +130,7 @@ namespace DH.WebHook
             mdModel.at.isAtAll = isAtAll;
             mdModel.msgtype = "markdown";
 
-            string data = JsonConvert.SerializeObject(mdModel);
+            string data = JsonSerializer.Serialize(mdModel);
             string json = Request(WebHookSetting.Current.DingTalkSendUrl, data, "POST");
 
             return json;
@@ -165,7 +164,7 @@ namespace DH.WebHook
             else
                 acModel.actionCard.hideAvatar = "0";
 
-            string data = JsonConvert.SerializeObject(acModel);
+            string data = JsonSerializer.Serialize(acModel);
             string json = Request(WebHookSetting.Current.DingTalkSendUrl, data, "POST");
 
             return json;
@@ -183,7 +182,7 @@ namespace DH.WebHook
         {
             ActionCardSingleModel acModel = new ActionCardSingleModel();
             acModel.actionCard = new actionCardSingle();
-            acModel.actionCard.btns = JsonConvert.DeserializeObject<List<btns>>(btns);//这里使用字符串拼接的json格式转化为List<model>,下面一个方法使用List<model>中直接添加值
+            acModel.actionCard.btns = JsonSerializer.Deserialize<List<btns>>(btns);//这里使用字符串拼接的json格式转化为List<model>,下面一个方法使用List<model>中直接添加值
             acModel.msgtype = "actionCard";
             acModel.actionCard.title = title;
             acModel.actionCard.text = text;
@@ -195,7 +194,7 @@ namespace DH.WebHook
                 acModel.actionCard.hideAvatar = hideAvatar;
             else
                 acModel.actionCard.hideAvatar = "0";
-            string data = JsonConvert.SerializeObject(acModel);
+            string data = JsonSerializer.Serialize(acModel);
             string json = Request(WebHookSetting.Current.DingTalkSendUrl, data, "POST");
 
             return json;
@@ -223,7 +222,7 @@ namespace DH.WebHook
             model2.picURL = "https://www.dingtalk.com/";
             fcModel.feedCard.links.Add(model2);
 
-            string data = JsonConvert.SerializeObject(fcModel);
+            string data = JsonSerializer.Serialize(fcModel);
             string json = Request(WebHookSetting.Current.DingTalkSendUrl, data, "POST");
 
             return json;

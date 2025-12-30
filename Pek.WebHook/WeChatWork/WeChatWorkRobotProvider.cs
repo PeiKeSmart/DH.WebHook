@@ -1,46 +1,56 @@
 ﻿using DH.WebHook.Models;
+using Flurl;
+using Flurl.Http;
 
-using WebApiClient.Parameterables;
+namespace DH.WebHook;
 
-namespace DH.WebHook
+/// <summary>企业微信机器人提供程序</summary>
+public class WeChatWorkRobotProvider : IWeChatWorkRobotProvider
 {
+    private const string BaseUrl = "https://qyapi.weixin.qq.com";
+
     /// <summary>
-    /// 企业微信机器人提供程序
+    /// 发送请求
     /// </summary>
-    public class WeChatWorkRobotProvider : IWeChatWorkRobotProvider
+    /// <param name="appId">企业微信机器人密钥</param>
+    /// <param name="request">请求</param>
+    public async Task<WeChatWorkRobotResponse> SendAsync(string appId, IDictionary<string, object> request)
     {
-        /// <summary>
-        /// 企业微信机器人API
-        /// </summary>
-        private readonly IWeChatWorkRobotApi _api;
+        return await BaseUrl
+            .AppendPathSegment("cgi-bin/webhook/send")
+            .SetQueryParam("key", appId)
+            .PostJsonAsync(request)
+            .ReceiveJson<WeChatWorkRobotResponse>();
+    }
 
-        /// <summary>
-        /// 初始化一个<see cref="WeChatWorkRobotProvider"/>类型的实例
-        /// </summary>
-        /// <param name="api">企业微信机器人API</param>
-        public WeChatWorkRobotProvider(IWeChatWorkRobotApi api) => _api = api ?? throw new ArgumentNullException(nameof(api));
+    /// <summary>
+    /// 发送请求
+    /// </summary>
+    /// <typeparam name="TMessageRequest">消息请求类型</typeparam>
+    /// <param name="appId">企业微信机器人密钥</param>
+    /// <param name="request">请求</param>
+    public async Task<WeChatWorkRobotResponse> SendAsync<TMessageRequest>(string appId, TMessageRequest request)
+        where TMessageRequest : WeChatWorkRobotRequest
+    {
+        return await BaseUrl
+            .AppendPathSegment("cgi-bin/webhook/send")
+            .SetQueryParam("key", appId)
+            .PostJsonAsync(request.ToRequestBody())
+            .ReceiveJson<WeChatWorkRobotResponse>();
+    }
 
-        /// <summary>
-        /// 发送请求
-        /// </summary>
-        /// <param name="appId">企业微信机器人密钥</param>
-        /// <param name="request">请求</param>
-        public async Task<WeChatWorkRobotResponse> SendAsync(string appId, IDictionary<string, object> request) => await _api.SendAsync(appId, request);
-
-        /// <summary>
-        /// 发送请求
-        /// </summary>
-        /// <typeparam name="TMessageRequest">消息请求类型</typeparam>
-        /// <param name="appId">企业微信机器人密钥</param>
-        /// <param name="request">请求</param>
-        public async Task<WeChatWorkRobotResponse> SendAsync<TMessageRequest>(string appId, TMessageRequest request) where TMessageRequest : WeChatWorkRobotRequest => await _api.SendAsync(appId, request.ToRequestBody());
-
-        /// <summary>
-        /// 上传文件
-        /// </summary>
-        /// <param name="appId">企业微信机器人密钥</param>
-        /// <param name="file">文件路径</param>
-        public async Task<WeChatWorkRobotUploadResponse> UploadAsync(string appId, string file) =>
-            await _api.UploadAsync(appId, new MulitpartFile(file));
+    /// <summary>
+    /// 上传文件
+    /// </summary>
+    /// <param name="appId">企业微信机器人密钥</param>
+    /// <param name="file">文件路径</param>
+    public async Task<WeChatWorkRobotUploadResponse> UploadAsync(string appId, string file)
+    {
+        return await BaseUrl
+            .AppendPathSegment("cgi-bin/webhook/upload_media")
+            .SetQueryParam("key", appId)
+            .SetQueryParam("type", Const.File)
+            .PostMultipartAsync(mp => mp.AddFile("media", file))
+            .ReceiveJson<WeChatWorkRobotUploadResponse>();
     }
 }
