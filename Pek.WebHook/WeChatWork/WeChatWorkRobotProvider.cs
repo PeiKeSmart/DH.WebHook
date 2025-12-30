@@ -4,8 +4,8 @@ using Flurl.Http;
 
 namespace DH.WebHook;
 
-/// <summary>企业微信机器人提供程序</summary>
-public class WeChatWorkRobotProvider : IWeChatWorkRobotProvider
+/// <summary>企业微信机器人</summary>
+public static class WeChatWorkRobot
 {
     private const string BaseUrl = "https://qyapi.weixin.qq.com";
 
@@ -14,7 +14,7 @@ public class WeChatWorkRobotProvider : IWeChatWorkRobotProvider
     /// </summary>
     /// <param name="appId">企业微信机器人密钥</param>
     /// <param name="request">请求</param>
-    public async Task<WeChatWorkRobotResponse> SendAsync(string appId, IDictionary<string, object> request)
+    public static async Task<WeChatWorkRobotResponse> SendAsync(string appId, IDictionary<string, object> request)
     {
         return await BaseUrl
             .AppendPathSegment("cgi-bin/webhook/send")
@@ -29,7 +29,7 @@ public class WeChatWorkRobotProvider : IWeChatWorkRobotProvider
     /// <typeparam name="TMessageRequest">消息请求类型</typeparam>
     /// <param name="appId">企业微信机器人密钥</param>
     /// <param name="request">请求</param>
-    public async Task<WeChatWorkRobotResponse> SendAsync<TMessageRequest>(string appId, TMessageRequest request)
+    public static async Task<WeChatWorkRobotResponse> SendAsync<TMessageRequest>(string appId, TMessageRequest request)
         where TMessageRequest : WeChatWorkRobotRequest
     {
         return await BaseUrl
@@ -44,7 +44,7 @@ public class WeChatWorkRobotProvider : IWeChatWorkRobotProvider
     /// </summary>
     /// <param name="appId">企业微信机器人密钥</param>
     /// <param name="file">文件路径</param>
-    public async Task<WeChatWorkRobotUploadResponse> UploadAsync(string appId, string file)
+    public static async Task<WeChatWorkRobotUploadResponse> UploadAsync(string appId, string file)
     {
         return await BaseUrl
             .AppendPathSegment("cgi-bin/webhook/upload_media")
