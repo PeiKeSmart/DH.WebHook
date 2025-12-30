@@ -106,4 +106,64 @@ public static class WeChatWorkRobot
             .PostMultipartAsync(mp => mp.AddFile("media", file))
             .ReceiveJson<WeChatWorkRobotUploadResponse>();
     }
+
+    #region 便捷方法
+
+    /// <summary>
+    /// 发送文本消息（使用配置）
+    /// </summary>
+    /// <param name="content">文本内容，最长不超过2048个字节</param>
+    /// <param name="mentionedList">userid列表，提醒指定成员(@某个成员)，@all表示提醒所有人</param>
+    /// <param name="mentionedMobileList">手机号列表，提醒手机号对应的群成员(@某个成员)，@all表示提醒所有人</param>
+    public static async Task<WeChatWorkRobotResponse> SendTextAsync(string content, List<string> mentionedList = null, List<string> mentionedMobileList = null)
+    {
+        var request = new TextMessageRequest
+        {
+            Content = content,
+            Users = mentionedList,
+            Phones = mentionedMobileList
+        };
+        return await SendAsync(request);
+    }
+
+    /// <summary>
+    /// 发送文本消息（手动指定 appId）
+    /// </summary>
+    /// <param name="appId">企业微信机器人密钥</param>
+    /// <param name="content">文本内容，最长不超过2048个字节</param>
+    /// <param name="mentionedList">userid列表，提醒指定成员(@某个成员)，@all表示提醒所有人</param>
+    /// <param name="mentionedMobileList">手机号列表，提醒手机号对应的群成员(@某个成员)，@all表示提醒所有人</param>
+    public static async Task<WeChatWorkRobotResponse> SendTextAsync(string appId, string content, List<string> mentionedList = null, List<string> mentionedMobileList = null)
+    {
+        var request = new TextMessageRequest
+        {
+            Content = content,
+            Users = mentionedList,
+            Phones = mentionedMobileList
+        };
+        return await SendAsync(appId, request);
+    }
+
+    /// <summary>
+    /// 发送Markdown消息（使用配置）
+    /// </summary>
+    /// <param name="content">markdown内容，最长不超过4096个字节</param>
+    public static async Task<WeChatWorkRobotResponse> SendMarkdownAsync(string content)
+    {
+        var request = new MarkdownMessageRequest { Content = content };
+        return await SendAsync(request);
+    }
+
+    /// <summary>
+    /// 发送Markdown消息（手动指定 appId）
+    /// </summary>
+    /// <param name="appId">企业微信机器人密钥</param>
+    /// <param name="content">markdown内容，最长不超过4096个字节</param>
+    public static async Task<WeChatWorkRobotResponse> SendMarkdownAsync(string appId, string content)
+    {
+        var request = new MarkdownMessageRequest { Content = content };
+        return await SendAsync(appId, request);
+    }
+
+    #endregion
 }
