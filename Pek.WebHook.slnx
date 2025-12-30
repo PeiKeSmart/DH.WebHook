@@ -8,5 +8,6 @@
     <File Path="NuGet.config" />
     <File Path="Readme.MD" />
   </Folder>
+  <Project Path="Pek.WebHook.TestConsole/Pek.WebHook.TestConsole.csproj" />
   <Project Path="Pek.WebHook/Pek.WebHook.csproj" />
 </Solution>
