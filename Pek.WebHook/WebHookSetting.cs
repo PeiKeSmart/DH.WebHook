@@ -18,7 +18,7 @@ public class WebHookSetting : Config<WebHookSetting> {
     [Description("钉钉机器人接口地址")]
     public String DingTalkSendUrl { get; set; }
 
-    /// <summary>企业微信机器人密钥</summary>
-    [Description("企业微信机器人密钥")]
-    public String WeChatWorkAppId { get; set; }
+    /// <summary>企业微信机器人 Webhook 地址</summary>
+    [Description("企业微信机器人 Webhook 地址")]
+    public String WeChatWorkWebhookUrl { get; set; }
 }
