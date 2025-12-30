@@ -20,10 +20,10 @@ jobs:
           9.x
     - name: Restore
       run: |
-        dotnet restore DH.WebHook/DH.WebHook.csproj
+        dotnet restore Pek.WebHook/Pek.WebHook.csproj
     - name: Build
       run: |
-        dotnet pack --no-restore --version-suffix $(date "+%Y.%m%d") -c Release -o out DH.WebHook/DH.WebHook.csproj
+        dotnet pack --no-restore --version-suffix $(date "+%Y.%m%d") -c Release -o out Pek.WebHook/Pek.WebHook.csproj
     - name: Publish
       run: |
         dotnet nuget push ./out/*.nupkg --skip-duplicate --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.nugetKey }}

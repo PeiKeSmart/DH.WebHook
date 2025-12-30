@@ -2,13 +2,12 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
     <OutputType>Library</OutputType>
-    <RootNamespace>DH.WebHook</RootNamespace>
-    <AssemblyName>DH.WebHook</AssemblyName>
+    <AssemblyName>Pek.WebHook</AssemblyName>
     <AssemblyTitle>WebHook消息推送</AssemblyTitle>
     <Description>用于DH框架的支持钉钉、企业微信等自定义机器人消息推送</Description>
     <Company>湖北登灏科技有限公司</Company>
     <Copyright>©2020-2025 湖北登灏科技有限公司</Copyright>
-    <VersionPrefix>4.14</VersionPrefix>
+    <VersionPrefix>4.16</VersionPrefix>
     <VersionSuffix>$([System.DateTime]::Now.ToString(`yyyy.MMdd`))</VersionSuffix>
     <Version>$(VersionPrefix).$(VersionSuffix)</Version>
     <FileVersion>$(Version)</FileVersion>
